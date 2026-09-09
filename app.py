@@ -72,7 +72,10 @@ def api_refresh():
 def _ensure_initial_sync():
     state = sync.get_state()
     if not state["last_synced_at"]:
-        sync.run_sync()
+        try:
+            sync.run_sync()
+        except Exception:
+            pass  # background loop will keep retrying; /api/meta exposes state["error"]
 
 
 _ensure_initial_sync()

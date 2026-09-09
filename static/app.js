@@ -43,9 +43,14 @@ async function loadMeta() {
     fEsp.appendChild(opt);
   });
 
-  document.getElementById("lastSynced").textContent = meta.last_synced_at
-    ? `Atualizado em ${fmtDate(meta.last_synced_at)}`
-    : "Sincronizando...";
+  const lastSyncedEl = document.getElementById("lastSynced");
+  if (meta.error) {
+    lastSyncedEl.textContent = `Erro ao sincronizar com o Kommo: ${meta.error}`;
+  } else {
+    lastSyncedEl.textContent = meta.last_synced_at
+      ? `Atualizado em ${fmtDate(meta.last_synced_at)}`
+      : "Sincronizando...";
+  }
 }
 
 async function loadConfig() {
