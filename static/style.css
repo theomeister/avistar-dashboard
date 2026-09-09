@@ -35,11 +35,13 @@ header.top {
 .top-left { display: flex; align-items: center; gap: 14px; }
 
 .logo {
-  width: 40px; height: 40px;
+  height: 40px;
+  width: auto;
+  padding: 5px 10px;
   border-radius: 10px;
-  background: rgba(255,255,255,0.14);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; letter-spacing: 0.5px;
+  background: #fff;
+  object-fit: contain;
+  display: block;
 }
 
 header.top h1 { font-size: 18px; margin: 0; font-weight: 700; }
@@ -155,14 +157,46 @@ a.lead-link:hover { text-decoration: underline; }
   padding: 14px;
 }
 .medico-card .avatar {
-  width: 32px; height: 32px; border-radius: 50%;
+  width: 44px; height: 44px; border-radius: 50%;
   background: var(--accent); color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 13px; margin-bottom: 8px;
+  font-weight: 700; font-size: 15px; margin-bottom: 8px;
+  overflow: hidden; flex-shrink: 0;
 }
-.medico-card .nome { font-weight: 700; font-size: 13.5px; margin-bottom: 8px; }
+.medico-card .avatar img { width: 100%; height: 100%; object-fit: cover; }
+.medico-card .nome { font-weight: 700; font-size: 13.5px; margin-bottom: 2px; }
+.medico-card .especialidade { font-size: 11px; color: var(--ink-soft); margin-bottom: 2px; }
+.medico-card .crm { font-size: 10.5px; color: var(--ink-soft); opacity: 0.8; margin-bottom: 8px; }
 .medico-card .stat { display: flex; justify-content: space-between; font-size: 12.5px; padding: 2px 0; }
 .medico-card .stat .k { color: var(--ink-soft); }
+
+.clickable { cursor: pointer; }
+.kpi.clickable:hover { box-shadow: 0 6px 22px rgba(4, 48, 43, 0.14); transform: translateY(-1px); transition: all 0.12s; }
+tr.clickable:hover td { background: #eaf5f2; cursor: pointer; }
+.medico-card.clickable:hover { box-shadow: var(--shadow); border-color: var(--accent); transform: translateY(-1px); transition: all 0.12s; }
+.bar-row.clickable:hover { background: #eaf5f2; border-radius: 6px; cursor: pointer; }
+
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(4, 48, 43, 0.45);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; z-index: 100;
+}
+.modal-overlay[hidden] { display: none; }
+.modal-panel {
+  background: #fff; border-radius: 14px; width: 100%; max-width: 960px;
+  max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+.modal-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 18px 22px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.modal-header h3 { margin: 0 0 4px; font-size: 15px; }
+.modal-header .panel-sub { margin: 0; }
+.modal-close { background: var(--bg); color: var(--ink); width: 30px; height: 30px; padding: 0; border-radius: 50%; }
+.modal-close:hover { background: var(--border); }
+.modal-body { padding: 12px 22px 22px; overflow-y: auto; }
+.modal-loading { padding: 30px 0; text-align: center; color: var(--ink-soft); font-size: 13px; }
 
 .tier { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 800; color: #fff; }
 .tier-A { background: var(--a-red); }

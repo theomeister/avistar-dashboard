@@ -8,6 +8,7 @@ from flask import Flask, jsonify, request, send_from_directory
 
 import metrics
 import sync
+from doctors import DOCTOR_INFO
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
@@ -60,6 +61,37 @@ def api_dashboard():
     dashboard = metrics.build_dashboard(filtered, state["pipelines_by_id"], SUBDOMAIN)
     dashboard["last_synced_at"] = state["last_synced_at"]
     return jsonify(dashboard)
+
+
+@app.get("/api/doctors")
+def api_doctors():
+    return jsonify(DOCTOR_INFO)
+
+
+@app.get("/api/leads")
+def api_leads():
+    state = sync.get_state()
+    leads = state["leads"]
+
+    month = request.args.get("month") or None
+    week = request.args.get("week") or None
+    day = request.args.get("day") or None
+    especialista = request.args.get("especialista") or None
+    filtered = metrics.filter_leads(leads, month=month, week=week, day=day, especialista=especialista)
+
+    rows = metrics.list_leads(
+        filtered,
+        SUBDOMAIN,
+        stage=request.args.get("stage") or None,
+        tipo=request.args.get("tipo") or None,
+        tipo_bucket=request.args.get("tipo_bucket") or None,
+        origem=request.args.get("origem") or None,
+        pipeline=request.args.get("pipeline") or None,
+        estagio=request.args.get("estagio") or None,
+        loss_reason=request.args.get("loss_reason") or None,
+        especialista=request.args.get("segment_especialista") or None,
+    )
+    return jsonify(rows)
 
 
 @app.post("/api/refresh")

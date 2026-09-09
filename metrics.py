@@ -3,6 +3,17 @@ from datetime import datetime, timedelta, timezone
 
 STALE_DAYS_THRESHOLD = 5
 MAX_STALE_LEADS = 100
+MAX_LIST_LEADS = 500
+
+TIPO_BUCKETS = {
+    "consultas": {"Consulta Particular", "Retorno", "Consulta desconto"},
+    "exames": {"Exames Internos", "Exames Externos"},
+    "procedimentos": {
+        "Cirurgia", "Agendamento de cirurgia", "Combo Refrativa",
+        "Combo córnea", "Yag laser", "Botox", "Retorno de botox",
+    },
+    "lentes": {"Lente de contato"},
+}
 
 
 def _dt(ts):
@@ -76,20 +87,11 @@ def compute_kpis(leads):
     conversao = (won / total * 100) if total else 0
     ticket_medio = (valor_ganho / won) if won else 0
 
-    tipo_buckets = {
-        "consultas": {"Consulta Particular", "Retorno", "Consulta desconto"},
-        "exames": {"Exames Internos", "Exames Externos"},
-        "procedimentos": {
-            "Cirurgia", "Agendamento de cirurgia", "Combo Refrativa",
-            "Combo córnea", "Yag laser", "Botox", "Retorno de botox",
-        },
-        "lentes": {"Lente de contato"},
-    }
-    vendidos = {k: 0 for k in tipo_buckets}
+    vendidos = {k: 0 for k in TIPO_BUCKETS}
     for l in leads:
         if l["stage"] != "won":
             continue
-        for key, names in tipo_buckets.items():
+        for key, names in TIPO_BUCKETS.items():
             if l["tipo"] in names:
                 vendidos[key] += 1
                 break
@@ -252,6 +254,46 @@ def compute_leads_parados(leads, subdomain):
         })
     stale.sort(key=lambda r: r["score"], reverse=True)
     return {"total": len(stale), "rows": stale[:MAX_STALE_LEADS]}
+
+
+def list_leads(leads, subdomain, stage=None, tipo=None, tipo_bucket=None, origem=None,
+               pipeline=None, estagio=None, loss_reason=None, especialista=None):
+    out = leads
+    if stage:
+        out = [l for l in out if l["stage"] == stage]
+    if tipo:
+        out = [l for l in out if l["tipo"] == tipo]
+    if tipo_bucket:
+        names = TIPO_BUCKETS.get(tipo_bucket, set())
+        out = [l for l in out if l["tipo"] in names]
+    if origem:
+        out = [l for l in out if l["origem"] == origem]
+    if pipeline:
+        out = [l for l in out if l["pipeline_name"] == pipeline]
+    if estagio:
+        out = [l for l in out if l["status_name"] == estagio]
+    if loss_reason:
+        out = [l for l in out if (l["loss_reason_name"] or "Sem motivo registrado") == loss_reason]
+    if especialista:
+        out = [l for l in out if l["especialista"] == especialista]
+
+    out = sorted(out, key=lambda l: l["created_at"] or 0, reverse=True)
+    total = len(out)
+    rows = [{
+        "id": l["id"],
+        "name": l["name"],
+        "lead_url": f"https://{subdomain}.kommo.com/leads/detail/{l['id']}",
+        "price": _money(l["price"]),
+        "stage": l["stage"],
+        "status_name": l["status_name"],
+        "pipeline_name": l["pipeline_name"],
+        "especialista": l["especialista"],
+        "tipo": l["tipo"],
+        "origem": l["origem"],
+        "responsavel": l["responsible_name"],
+        "created_at": day_key(l["created_at"]),
+    } for l in out[:MAX_LIST_LEADS]]
+    return {"total": total, "rows": rows}
 
 
 def build_dashboard(leads, pipelines_by_id, subdomain):

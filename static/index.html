@@ -13,7 +13,7 @@
 
 <header class="top">
   <div class="top-left">
-    <div class="logo">AV</div>
+    <img class="logo" src="/img/logo.png" alt="Avistar">
     <div>
       <h1>Dashboard Comercial — Clínica Avistar</h1>
       <p class="subtitle">Integrado ao Kommo CRM</p>
@@ -107,6 +107,30 @@
 
   <footer id="footer"></footer>
 </main>
+
+<div id="leadsModal" class="modal-overlay" hidden>
+  <div class="modal-panel">
+    <div class="modal-header">
+      <div>
+        <h3 id="modalTitle">Leads</h3>
+        <p id="modalSub" class="panel-sub"></p>
+      </div>
+      <button id="modalClose" class="btn btn-ghost modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="modalLoading" class="modal-loading">Carregando...</div>
+      <div class="table-wrap">
+        <table id="tblModal">
+          <thead><tr>
+            <th>Lead</th><th>Valor</th><th>Estágio</th><th>Pipeline</th>
+            <th>Médico</th><th>Tipo</th><th>Origem</th><th>Responsável</th><th>Criado em</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="/app.js"></script>
 </body>
