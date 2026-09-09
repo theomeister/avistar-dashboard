@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Comercial — Clínica Avistar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="top-left">
+    <div class="logo">AV</div>
+    <div>
+      <h1>Dashboard Comercial — Clínica Avistar</h1>
+      <p class="subtitle">Integrado ao Kommo CRM</p>
+    </div>
+  </div>
+  <div class="top-right">
+    <span id="lastSynced" class="last-synced">—</span>
+    <button id="btnRefresh" class="btn btn-ghost">↻ Atualizar</button>
+    <button id="btnPdf" class="btn btn-solid">📄 Gerar PDF</button>
+  </div>
+</header>
+
+<main>
+  <section class="filters card">
+    <div class="filter">
+      <label>MÊS</label>
+      <select id="fMonth"><option value="">Todos os meses</option></select>
+    </div>
+    <div class="filter">
+      <label>SEMANA</label>
+      <select id="fWeek"><option value="">Todas as semanas</option></select>
+      <span class="hint">Quinta a quinta — fecha antes da reunião de sexta</span>
+    </div>
+    <div class="filter">
+      <label>DIA</label>
+      <input type="date" id="fDay">
+    </div>
+    <div class="filter">
+      <label>ESPECIALISTA</label>
+      <select id="fEspecialista"><option value="">Todos os especialistas</option></select>
+    </div>
+  </section>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="panel card">
+    <h2>Origem dos leads</h2>
+    <p class="panel-sub">Volume e conversão por canal de origem</p>
+    <div class="table-wrap">
+      <table id="tblOrigem">
+        <thead><tr><th>Origem</th><th>Leads</th><th>Ganhos</th><th>Conversão</th><th>Valor ganho</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel card">
+    <h2>Funil comercial — leads em aberto</h2>
+    <p class="panel-sub" id="funilComercialSub"></p>
+    <div class="table-wrap">
+      <table id="tblFunilComercial">
+        <thead><tr><th>Pipeline</th><th>Estágio</th><th>Leads</th><th>% do funil</th><th>Valor</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel card">
+    <h2>Funil por tipo de atendimento</h2>
+    <p class="panel-sub">Direto do campo "Especialidade/Tipo" do Kommo</p>
+    <div class="table-wrap">
+      <table id="tblFunilTipo">
+        <thead><tr><th>Tipo</th><th>Leads</th><th>Ganhos</th><th>Conversão</th><th>Valor ganho</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel card">
+    <h2>Motivos de perda</h2>
+    <p class="panel-sub" id="motivosSub"></p>
+    <div id="motivosList" class="bars"></div>
+  </section>
+
+  <section class="panel card">
+    <h2>Performance por médico</h2>
+    <p class="panel-sub">Corpo clínico Avistar · volume de leads, conversão e valor ganho por especialista</p>
+    <div id="medicosGrid" class="medicos-grid"></div>
+  </section>
+
+  <section class="panel card">
+    <h2>Leads parados</h2>
+    <p class="panel-sub" id="paradosSub">Priorizados por score de risco (tempo parado + valor)</p>
+    <div class="table-wrap">
+      <table id="tblParados">
+        <thead><tr><th>Score</th><th>Lead</th><th>Dias parado</th><th>Valor</th><th>Pipeline</th><th>Estágio</th><th>Médico</th><th>Responsável</th><th>Ação recomendada</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer id="footer"></footer>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>

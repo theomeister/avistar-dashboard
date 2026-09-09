@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.kommo_token
+data/cache.json
+account.json
+pipelines.json
+users.json
+custom_fields.json
+loss_reasons.json
+sample_leads.json
+curl_err.log
