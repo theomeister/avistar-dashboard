@@ -232,9 +232,15 @@ def _acao_recomendada(lead, dias):
     return "Acompanhar / dar sequência"
 
 
+STALE_EXCLUDED_PIPELINES = {"06 - Concluídos"}
+
+
 def compute_leads_parados(leads, subdomain):
     now = datetime.now(tz=timezone.utc)
-    open_leads = [l for l in leads if l["stage"] == "open" and l["updated_at"]]
+    open_leads = [
+        l for l in leads
+        if l["stage"] == "open" and l["updated_at"] and l["pipeline_name"] not in STALE_EXCLUDED_PIPELINES
+    ]
     stale = []
     for l in open_leads:
         updated = _dt(l["updated_at"])
