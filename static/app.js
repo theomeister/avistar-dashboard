@@ -116,12 +116,13 @@ async function openLeadsModal(title, sub, segment) {
       <td>${esc(r.pipeline_name)}</td>
       <td>${esc(r.especialista)}</td>
       <td>${esc(r.tipo)}</td>
+      <td>${esc(r.procedimento) || "—"}</td>
       <td>${esc(r.origem)}</td>
       <td>${esc(r.responsavel)}</td>
       <td>${r.created_at ? r.created_at.split("-").reverse().join("/") : "—"}</td>
-    </tr>`).join("") || `<tr><td colspan="9" style="text-align:center;color:var(--ink-soft);">Nenhum lead encontrado.</td></tr>`;
+    </tr>`).join("") || `<tr><td colspan="10" style="text-align:center;color:var(--ink-soft);">Nenhum lead encontrado.</td></tr>`;
   } catch (e) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--ink-soft);">Erro ao carregar leads.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;color:var(--ink-soft);">Erro ao carregar leads.</td></tr>`;
   } finally {
     loading.hidden = true;
   }

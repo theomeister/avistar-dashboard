@@ -295,6 +295,7 @@ def list_leads(leads, subdomain, stage=None, tipo=None, tipo_bucket=None, origem
         "pipeline_name": l["pipeline_name"],
         "especialista": l["especialista"],
         "tipo": l["tipo"],
+        "procedimento": l["cirurgia_detalhe"] or l["exame"] or l["lio"] or None,
         "origem": l["origem"],
         "responsavel": l["responsible_name"],
         "created_at": day_key(l["created_at"]),
