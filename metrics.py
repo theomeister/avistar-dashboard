@@ -61,7 +61,11 @@ def build_especialista_options(leads):
     return sorted({l["especialista"] for l in leads if l["especialista"]})
 
 
-def filter_leads(leads, month=None, week=None, day=None, especialista=None):
+def build_responsavel_options(leads):
+    return sorted({l["responsible_name"] for l in leads if l["responsible_name"] and l["responsible_name"] != "—"})
+
+
+def filter_leads(leads, month=None, week=None, day=None, especialista=None, responsavel=None):
     out = leads
     if month:
         out = [l for l in out if month_key(l["created_at"]) == month]
@@ -71,6 +75,8 @@ def filter_leads(leads, month=None, week=None, day=None, especialista=None):
         out = [l for l in out if day_key(l["created_at"]) == day]
     if especialista:
         out = [l for l in out if l["especialista"] == especialista]
+    if responsavel:
+        out = [l for l in out if l["responsible_name"] == responsavel]
     return out
 
 

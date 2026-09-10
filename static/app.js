@@ -1,4 +1,4 @@
-const state = { month: "", week: "", day: "", especialista: "" };
+const state = { month: "", week: "", day: "", especialista: "", responsavel: "" };
 let doctorsInfo = {};
 
 const fmtMoney = (v) =>
@@ -46,6 +46,14 @@ async function loadMeta() {
     fEsp.appendChild(opt);
   });
 
+  const fSec = document.getElementById("fSecretaria");
+  meta.responsaveis.forEach((r) => {
+    const opt = document.createElement("option");
+    opt.value = r;
+    opt.textContent = r;
+    fSec.appendChild(opt);
+  });
+
   const lastSyncedEl = document.getElementById("lastSynced");
   if (meta.error) {
     lastSyncedEl.textContent = `Erro ao sincronizar com o Kommo: ${meta.error}`;
@@ -79,6 +87,7 @@ function segmentParams(segment) {
   if (state.week) params.set("week", state.week);
   if (state.day) params.set("day", state.day);
   if (state.especialista) params.set("especialista", state.especialista);
+  if (state.responsavel) params.set("responsavel", state.responsavel);
   Object.entries(segment || {}).forEach(([k, v]) => { if (v) params.set(k, v); });
   return params;
 }
@@ -276,6 +285,7 @@ function wireFilters() {
   document.getElementById("fWeek").addEventListener("change", (e) => { state.week = e.target.value; loadDashboard(); });
   document.getElementById("fDay").addEventListener("change", (e) => { state.day = e.target.value; loadDashboard(); });
   document.getElementById("fEspecialista").addEventListener("change", (e) => { state.especialista = e.target.value; loadDashboard(); });
+  document.getElementById("fSecretaria").addEventListener("change", (e) => { state.responsavel = e.target.value; loadDashboard(); });
 
   document.getElementById("btnRefresh").addEventListener("click", async (e) => {
     const btn = e.currentTarget;

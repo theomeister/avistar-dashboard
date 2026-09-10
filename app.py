@@ -44,6 +44,7 @@ def api_meta():
         "months": metrics.build_month_options(leads),
         "weeks": metrics.build_week_options(leads),
         "especialistas": metrics.build_especialista_options(leads),
+        "responsaveis": metrics.build_responsavel_options(leads),
     })
 
 
@@ -56,8 +57,9 @@ def api_dashboard():
     week = request.args.get("week") or None
     day = request.args.get("day") or None
     especialista = request.args.get("especialista") or None
+    responsavel = request.args.get("responsavel") or None
 
-    filtered = metrics.filter_leads(leads, month=month, week=week, day=day, especialista=especialista)
+    filtered = metrics.filter_leads(leads, month=month, week=week, day=day, especialista=especialista, responsavel=responsavel)
     dashboard = metrics.build_dashboard(filtered, state["pipelines_by_id"], SUBDOMAIN)
     dashboard["last_synced_at"] = state["last_synced_at"]
     return jsonify(dashboard)
@@ -77,7 +79,8 @@ def api_leads():
     week = request.args.get("week") or None
     day = request.args.get("day") or None
     especialista = request.args.get("especialista") or None
-    filtered = metrics.filter_leads(leads, month=month, week=week, day=day, especialista=especialista)
+    responsavel = request.args.get("responsavel") or None
+    filtered = metrics.filter_leads(leads, month=month, week=week, day=day, especialista=especialista, responsavel=responsavel)
 
     rows = metrics.list_leads(
         filtered,
